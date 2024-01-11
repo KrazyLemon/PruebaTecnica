@@ -21,7 +21,7 @@
 3.  Ejecutar script de la base de datos
 4.  Una vez que la base este arriba podemos iniciar el server y con este podemos iniciar el front
 
-
+## Imagenes del proyecto final
 
 ![Descripción de la imagen](/images/clientes.png)
 ![Descripción de la imagen](/images/newcuenta.png)
