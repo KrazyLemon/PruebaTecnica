@@ -1,5 +1,7 @@
 # Sitio FullStack para ver Clientes  y Cuentas
 
+![imagen de un sitio web](/images/cuentas.png)
+
 ### Hecho por Angel Eduardo Velazquez Morales
 
 > Este sitio fue realizado para la prueba del trabajo
@@ -19,3 +21,8 @@
 3.  Ejecutar script de la base de datos
 4.  Una vez que la base este arriba podemos iniciar el server y con este podemos iniciar el front
 
+
+
+![Descripción de la imagen](/images/clientes.png)
+![Descripción de la imagen](/images/newcuenta.png)
+![Descripción de la imagen](/images/usuario.png)
