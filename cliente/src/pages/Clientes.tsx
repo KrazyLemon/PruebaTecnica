@@ -15,20 +15,18 @@ export default function ClientesPage() {
     const handleClose = () => setShow(false);
 
     const [checkDate, setCheckDate] = useState(false);
-
-    const [isValidNombre, setIsValidNombre] = useState(true);
-    const [isValidApellidoPaterno, setIsValidApellidoPaterno] = useState(true);
-    const [isValidApellidoMaterno, setIsValidApellidoMaterno] = useState(true);
-
-    const [isValidCorreo, setIsValidCorreo] = useState(true);
-    const [isValidCurp, setIsValidCurp] = useState(true);
+    const [isValidNombre, setIsValidNombre] = useState(false);
+    const [isValidaPaterno, setIsValidaPaterno] = useState(false);
+    const [isValidaMaterno, setIsValidaMaterno] = useState(false);
+    const [isValidemail, setIsValidemail] = useState(false);
+    const [isValidCurp, setIsValidCurp] = useState(false);
 
     const [nombre, setNombre] = useState("");
-    const [apellidoPaterno, setApellidoPaterno] = useState("");
-    const [apellidoMaterno, setApellidoMaterno] = useState("");
+    const [aPaterno, setaPaterno] = useState("");
+    const [aMaterno, setaMaterno] = useState("");
     const [fecha, setFecha] = useState("");
     const [sexo, setSexo] = useState("");
-    const [correo, setCorreo] = useState("");
+    const [email, setemail] = useState("");
     const [curp, setCurp] = useState("");
 
 
@@ -57,36 +55,37 @@ export default function ClientesPage() {
         }
     }
 
-    const handleApellidoPaternoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleaPaternoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const pattern = new RegExp("^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ]+$");
-        setIsValidApellidoPaterno(pattern.test(event.target.value));
-        if (isValidApellidoPaterno) {
-            setApellidoPaterno(event.target.value);
+        setIsValidaPaterno(pattern.test(event.target.value));
+        if (isValidaPaterno) {
+            setaPaterno(event.target.value);
         }
     }
 
-    const handleApellidoMaternoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleaMaternoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const pattern = new RegExp("^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ]+$");
-        setIsValidApellidoMaterno(pattern.test(event.target.value));
-        if (isValidApellidoMaterno) {
-            setApellidoMaterno(event.target.value);
+        setIsValidaMaterno(pattern.test(event.target.value));
+        if (isValidaMaterno) {
+            setaMaterno(event.target.value);
         }
     }
 
-    const handleCorreoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleemailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const pattern = new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
-        setIsValidCorreo(pattern.test(event.target.value));
-        if (isValidCorreo) {
-            setCorreo(event.target.value);
-            console.log(correo)
+        setIsValidemail(pattern.test(event.target.value));
+        if (isValidemail) {
+            setemail(event.target.value);
+            console.log(email)
         }
     }
 
-    const handleCurpChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleCurpChange = (event: React.ChangeEvent<HTMLInputElement>) => {  
         const pattern = new RegExp("^[A-Z]{1}[AEIOUX]{1}[A-ZX]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$");
         setIsValidCurp(pattern.test(event.target.value));
-        if (isValidCurp) {
+        if (!isValidCurp) {
             setCurp(event.target.value);
+            // console.log(curp)
         }
     }
 
@@ -103,9 +102,11 @@ export default function ClientesPage() {
     const CrearUsuario = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const edad = new Date().getFullYear() - new Date(fecha).getFullYear()
+        console.log(edad)
+        console.log(nombre, aPaterno, aMaterno, edad.toString(), sexo.toUpperCase(), email, curp.toUpperCase())
         try {
             const res = await axios.post(API_URL, {
-                nombre, apellidoPaterno, apellidoMaterno, edad: edad.toString(), sexo: sexo.toUpperCase(), correo, curp: curp.toUpperCase()
+                nombre, aPaterno, aMaterno, edad: edad.toString(), sexo: sexo.toUpperCase(), email, curp: curp.toUpperCase()
             })
             console.log(res.data)
         } catch (error) {
@@ -124,10 +125,10 @@ export default function ClientesPage() {
                 <section className="container titulo-tabla">
                     <h1>Tabla Clientes</h1>
                     <div>
-                        <button className=" btn btn-outline-success mx-1" > Crear Cuenta<Icon width={"55px"} icon="lets-icons:wallet-alt-duotone" onClick={() => setShowModal(true)} /> </button>
+                        <button className=" btn btn-outline-success mx-1" >Crear Cuenta<Icon width={"55px"} icon="lets-icons:wallet-alt-duotone" onClick={() => setShowModal(true)} /> </button>
                         <Modal show={showModal} onHide={handleCloseModal} size="xl">
                             <Modal.Header closeButton>
-                                <Modal.Title>Crear usuario</Modal.Title>
+                                <Modal.Title>Crear Cuenta</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
                                 <Form onSubmit={CrearUsuario} >
@@ -164,28 +165,46 @@ export default function ClientesPage() {
                                 <Form onSubmit={CrearUsuario} >
                                     <Form.Group className="mb-3">
                                         <Form.Label>Nombre</Form.Label>
-                                        <Form.Control type="text" placeholder="Ejemplo:Jóse" autoFocus required isInvalid={!isValidNombre} value={nombre} onChange={handleNombreChange} />
+                                        <Form.Control 
+                                            type="text" 
+                                            placeholder="Ejemplo:Jóse" 
+                                            isInvalid={!isValidNombre} 
+                                            onChange={handleNombreChange} 
+                                            autoFocus required />
                                         <Form.Control.Feedback type="invalid">
                                             Por favor ingresa un nombre válido.
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
                                         <Form.Label>Apellido paterno</Form.Label>
-                                        <Form.Control type="text" placeholder="Ejemplo:Gómez" required isInvalid={!isValidApellidoPaterno} value={apellidoPaterno} onChange={handleApellidoPaternoChange} />
+                                        <Form.Control
+                                             type="text" 
+                                             placeholder="Ejemplo:Gómez" 
+                                             isInvalid={!isValidaPaterno} 
+                                             onChange={handleaPaternoChange} 
+                                             required />
                                         <Form.Control.Feedback type="invalid">
                                             Por favor ingresa un Apellido válido.
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
                                         <Form.Label>Apellido Materno</Form.Label>
-                                        <Form.Control type="text" placeholder="Ejemplo:Martínez" required isInvalid={!isValidApellidoMaterno} value={apellidoMaterno} onChange={handleApellidoMaternoChange} />
+                                        <Form.Control 
+                                            type="text" 
+                                            placeholder="Ejemplo:Martínez" 
+                                            isInvalid={!isValidaMaterno} 
+                                            onChange={handleaMaternoChange} 
+                                            required />
                                         <Form.Control.Feedback type="invalid">
                                             Por favor ingresa un Apellido válido.
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
                                         <Form.Label>Fecha de Cumpleaños</Form.Label>
-                                        <Form.Control type="date" onChange={handleDateChange} isValid={!checkDate} />
+                                        <Form.Control 
+                                            type="date" 
+                                            onChange={handleDateChange} 
+                                            isInvalid={!checkDate} />
                                         {!checkDate && <Form.Text className="text-danger">La fecha debe ser anterior a la fecha actual.</Form.Text>}
                                     </Form.Group>
                                     <fieldset>
@@ -214,20 +233,26 @@ export default function ClientesPage() {
                                         </Form.Group>
                                     </fieldset>
                                     <Form.Group className="mb-3">
-                                        <Form.Label>Correo</Form.Label>
+                                        <Form.Label>email</Form.Label>
                                         <Form.Control
                                             type="email"
-                                            placeholder="Ejemplo:correo@example.com"
-                                            isInvalid={!isValidCorreo}
-                                            onChange={handleCorreoChange}
+                                            placeholder="Ejemplo:email@example.com"
+                                            isInvalid={!isValidemail}
+                                            onChange={handleemailChange}
                                             required />
                                         <Form.Control.Feedback type="invalid">
-                                            Por favor ingresa un correo válido.
+                                            Por favor ingresa un email válido.
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
                                         <Form.Label>CURP</Form.Label>
-                                        <Form.Control type="text" placeholder="Ejemplo:AAAA000000HAA00AA" required isInvalid={!isValidCurp} value={curp} onChange={handleCurpChange} />
+                                        <Form.Control 
+                                            type="text" 
+                                            placeholder="Ejemplo:AAAA000000HAA00AA"  
+                                            isValid={isValidCurp}
+                                            isInvalid={!isValidCurp} 
+                                            onChange={handleCurpChange}
+                                            required />
                                         <Form.Control.Feedback type="invalid">
                                             Por favor ingresa un CURP válido.
                                         </Form.Control.Feedback>
